@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">EvernoteClient</string>
+    <string name="login_button_login">Iniciar sesión</string>
+</resources>
