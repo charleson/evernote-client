@@ -9,12 +9,36 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.ontherunvaro.evernoteclient.activity.NoteListActivity">
 
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_notesort"
+        android:spinnerMode="dropdown"
+        android:entries="@array/sort_modes"
+        android:layout_alignBaseline="@+id/label_sort_notes"
+        android:layout_alignBottom="@+id/label_sort_notes"
+        android:layout_toRightOf="@+id/label_sort_notes"
+        android:layout_toEndOf="@+id/label_sort_notes"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Not implemented yet!"
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/label_note_list_sort"
+        android:id="@+id/label_sort_notes"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/noteList"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spinner_notesort" />
+
 </RelativeLayout>
