@@ -1,9 +1,11 @@
 package com.ontherunvaro.evernoteclient.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +20,7 @@ import com.evernote.edam.error.EDAMSystemException;
 import com.evernote.edam.error.EDAMUserException;
 import com.evernote.edam.notestore.NoteFilter;
 import com.evernote.edam.notestore.NoteList;
+import com.evernote.edam.type.Note;
 import com.evernote.thrift.TException;
 import com.ontherunvaro.evernoteclient.R;
 import com.ontherunvaro.evernoteclient.adapter.NotesAdapter;
@@ -47,10 +50,15 @@ public class NoteListActivity extends AppCompatActivity {
             NoteList notes;
             try {
                 notes = nsc.findNotes(new NoteFilter(), 0, MAX_NOTES);
+                for (Note note : notes.getNotes()) {
+                    note.setContent(nsc.getNoteContent(note.getGuid()));
+                }
                 return notes;
             } catch (EDAMUserException | TException | EDAMSystemException | EDAMNotFoundException e) {
-                e.printStackTrace();
+                Log.e(TAG, "doInBackground: ", e);
             }
+
+
             return null;
         }
 
@@ -88,6 +96,16 @@ public class NoteListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_note_list);
 
         new GetNotesTask().execute();
+        ListView lv = (ListView) findViewById(R.id.noteList);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
+                Note n = (Note) adapter.getItemAtPosition(pos);
+                Intent i = new Intent(NoteListActivity.this, NoteDisplayActivity.class);
+                i.putExtra(NoteDisplayActivity.PARAM_NOTE, n);
+                startActivity(i);
+            }
+        });
 
     }
 

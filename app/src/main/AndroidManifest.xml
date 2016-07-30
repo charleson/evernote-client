@@ -18,7 +18,10 @@
         </activity>
         <activity
             android:name=".activity.NoteListActivity"
-            android:label="@string/activity_notelist"></activity>
+            android:label="@string/title_activity_note_list" />
+        <activity
+            android:name=".activity.NoteDisplayActivity"
+            android:label="@string/title_activity_note_display" />
     </application>
 
 </manifest>

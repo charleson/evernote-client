@@ -7,6 +7,7 @@
     <string name="label_note_list_sort">Ordenar por:</string>
     <string name="option_sort_title">Título</string>
     <string name="option_sort_date">Fecha</string>
-    <string name="message_retrieving_notes">Recuperando notas...</string>
-    <string name="activity_notelist">Notas</string>
+    <string name="message_retrieving_notes">Recuperando notas…</string>
+    <string name="title_activity_note_list">Notas</string>
+    <string name="title_activity_note_display">Detalle de la nota</string>
 </resources>
