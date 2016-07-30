@@ -20,6 +20,12 @@ public class LoginActivity extends AppCompatActivity implements EvernoteLoginFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (EvernoteSession.getInstance().isLoggedIn()) {
+            nextActivity();
+            finish();
+        }
+
         setContentView(R.layout.activity_login);
 
         loginButton = (Button) findViewById(R.id.button_login);
