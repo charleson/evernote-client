@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.evernote.edam.type.Note;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,5 +39,34 @@ public class NotesAdapter extends ArrayAdapter<Note> {
         }
 
         return view;
+    }
+
+
+    public void sort(SortType type) {
+        switch (type) {
+
+            case TITLE:
+                super.sort(new Comparator<Note>() {
+                    @Override
+                    public int compare(Note n1, Note n2) {
+                        return n1.getTitle().compareTo(n2.getTitle());
+                    }
+                });
+                break;
+            case DATE:
+                super.sort(new Comparator<Note>() {
+                    @Override
+                    public int compare(Note n1, Note n2) {
+                        return Long.valueOf(n1.getUpdated()).compareTo(n2.getUpdated());
+                    }
+                });
+                break;
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public enum SortType {
+        DATE, TITLE
     }
 }

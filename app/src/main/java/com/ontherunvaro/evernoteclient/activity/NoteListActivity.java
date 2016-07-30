@@ -4,7 +4,11 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.evernote.client.android.EvernoteSession;
 import com.evernote.client.android.asyncclient.EvernoteClientFactory;
@@ -57,8 +61,22 @@ public class NoteListActivity extends AppCompatActivity {
             if (notes != null) {
                 ListView lv = (ListView) findViewById(R.id.noteList);
                 NotesAdapter na = new NotesAdapter(NoteListActivity.this, android.R.layout.simple_list_item_1, notes.getNotes());
+                na.sort(NotesAdapter.SortType.TITLE);
                 lv.setAdapter(na);
             }
+
+            Spinner sortSpinner = (Spinner) findViewById(R.id.spinner_notesort);
+            sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    sortList();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    //do nothing
+                }
+            });
 
             loadingDialog.dismiss();
         }
@@ -72,4 +90,21 @@ public class NoteListActivity extends AppCompatActivity {
         new GetNotesTask().execute();
 
     }
+
+    private void sortList() {
+        ListView lv = (ListView) findViewById(R.id.noteList);
+        NotesAdapter na = (NotesAdapter) lv.getAdapter();
+
+        Spinner sortSpinner = (Spinner) findViewById(R.id.spinner_notesort);
+        TextView tv = (TextView) sortSpinner.getSelectedView();
+        String selected = tv.getText().toString();
+
+        if (selected.equals(getString(R.string.option_sort_title))) {
+            na.sort(NotesAdapter.SortType.TITLE);
+        } else if (selected.equals(getString(R.string.option_sort_date))) {
+            na.sort(NotesAdapter.SortType.DATE);
+        }
+    }
+
+
 }
