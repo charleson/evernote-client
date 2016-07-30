@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -103,6 +104,15 @@ public class NoteListActivity extends AppCompatActivity {
                 Note n = (Note) adapter.getItemAtPosition(pos);
                 Intent i = new Intent(NoteListActivity.this, NoteDisplayActivity.class);
                 i.putExtra(NoteDisplayActivity.PARAM_NOTE, n);
+                startActivity(i);
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.new_note_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(NoteListActivity.this, NewNoteActivity.class);
                 startActivity(i);
             }
         });

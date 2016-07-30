@@ -22,6 +22,9 @@
         <activity
             android:name=".activity.NoteDisplayActivity"
             android:label="@string/title_activity_note_display" />
+        <activity
+            android:name=".activity.NewNoteActivity"
+            android:label="@string/title_activity_new_note" />
     </application>
 
 </manifest>
