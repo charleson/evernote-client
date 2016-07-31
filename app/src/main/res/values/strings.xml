@@ -20,4 +20,6 @@
     <string name="error_compulsory_field">Este campo es obligatorio</string>
     <string name="error_note_not_saved">Se ha producido un error al guardar la nota, vuelve a intentarlo.</string>
     <string name="message_new_note_created">Nota creada con éxito</string>
+    <string name="message_retrieving_content">Recuperando contenido de la nota…</string>
+    <string name="error_note_content_recover">Se ha producido un error al recuperar la nota.</string>
 </resources>

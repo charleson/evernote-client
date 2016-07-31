@@ -53,9 +53,6 @@ public class NoteListActivity extends AppCompatActivity {
             NoteList notes;
             try {
                 notes = nsc.findNotes(new NoteFilter(), 0, MAX_NOTES);
-                for (Note note : notes.getNotes()) {
-                    note.setContent(nsc.getNoteContent(note.getGuid()));
-                }
                 return notes;
             } catch (EDAMUserException | TException | EDAMSystemException | EDAMNotFoundException e) {
                 Log.e(TAG, "doInBackground: ", e);
@@ -143,14 +140,6 @@ public class NoteListActivity extends AppCompatActivity {
                 Note n = (Note) data.getExtras().get(NewNoteActivity.PARAM_NOTE_RESULT);
                 ListView lv = (ListView) findViewById(R.id.noteList);
                 NotesAdapter na = (NotesAdapter) lv.getAdapter();
-
-                EvernoteNoteStoreClient nsc = EvernoteSession.getInstance().getEvernoteClientFactory().getNoteStoreClient();
-                try {
-                    n.setContent(nsc.getNoteContent(n.getGuid()));
-                } catch (EDAMUserException | EDAMSystemException | TException | EDAMNotFoundException e) {
-                    Log.e(TAG, "onActivityResult: ", e);
-                }
-
                 na.add(n);
                 sortList();
             }
