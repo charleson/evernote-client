@@ -31,6 +31,8 @@ public class NoteListActivity extends AppCompatActivity {
     private final static String TAG = "NoteListActivity";
     private final static Integer MAX_NOTES = 20;
 
+    private final static int REQUEST_NEW_NOTE_SUCCESSFUL = 1;
+
     private class GetNotesTask extends AsyncTask<Void, Void, NoteList> {
 
         ProgressDialog loadingDialog = new ProgressDialog(NoteListActivity.this);
@@ -113,7 +115,7 @@ public class NoteListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(NoteListActivity.this, NewNoteActivity.class);
-                startActivity(i);
+                startActivityForResult(i, REQUEST_NEW_NOTE_SUCCESSFUL);
             }
         });
 
@@ -134,5 +136,24 @@ public class NoteListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_NEW_NOTE_SUCCESSFUL) {
+            if (resultCode == RESULT_OK) {
+                Note n = (Note) data.getExtras().get(NewNoteActivity.PARAM_NOTE_RESULT);
+                ListView lv = (ListView) findViewById(R.id.noteList);
+                NotesAdapter na = (NotesAdapter) lv.getAdapter();
 
+                EvernoteNoteStoreClient nsc = EvernoteSession.getInstance().getEvernoteClientFactory().getNoteStoreClient();
+                try {
+                    n.setContent(nsc.getNoteContent(n.getGuid()));
+                } catch (EDAMUserException | EDAMSystemException | TException | EDAMNotFoundException e) {
+                    Log.e(TAG, "onActivityResult: ", e);
+                }
+
+                na.add(n);
+                sortList();
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.ontherunvaro.evernoteclient.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,12 +21,17 @@ import com.ontherunvaro.evernoteclient.R;
 public class NewNoteActivity extends AppCompatActivity implements EvernoteCallback<Note> {
 
     private static final String TAG = "NewNoteActivity";
+    public static final String PARAM_NOTE_RESULT = "com.ontherunvaro.evernoteclient.RESULT_NEW_NOTE";
 
     @Override
     public void onSuccess(Note result) {
         if (result != null) {
             Log.d(TAG, "onPostExecute: Nota creada" + result);
             Toast.makeText(this, R.string.message_new_note_created, Toast.LENGTH_SHORT).show();
+
+            Intent i = new Intent();
+            i.putExtra(PARAM_NOTE_RESULT, result);
+            setResult(RESULT_OK, i);
             finish();
         }
     }
@@ -86,6 +92,7 @@ public class NewNoteActivity extends AppCompatActivity implements EvernoteCallba
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(RESULT_CANCELED);
                 finish();
                 return true;
             default:
