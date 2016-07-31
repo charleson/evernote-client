@@ -17,4 +17,7 @@
     <string name="label_new_note_content">Contenido</string>
     <string name="btn_new_note_save">Guardar</string>
     <string name="hint_new_note_content">Contenido de la nota…</string>
+    <string name="error_compulsory_field">Este campo es obligatorio</string>
+    <string name="error_note_not_saved">Se ha producido un error al guardar la nota, vuelve a intentarlo.</string>
+    <string name="message_new_note_created">Nota creada con éxito</string>
 </resources>
