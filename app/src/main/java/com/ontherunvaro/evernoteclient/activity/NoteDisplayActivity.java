@@ -19,6 +19,8 @@ import com.evernote.edam.type.Note;
 import com.evernote.thrift.TException;
 import com.ontherunvaro.evernoteclient.R;
 import com.ontherunvaro.evernoteclient.util.ENMLParser;
+import com.ontherunvaro.evernoteclient.util.NoteContentCache;
+
 public class NoteDisplayActivity extends AppCompatActivity {
 
     private final static String TAG = "NoteDisplayActivity";
@@ -55,6 +57,7 @@ public class NoteDisplayActivity extends AppCompatActivity {
             if (note != null && note.getContent() != null) {
                 TextView content = (TextView) findViewById(R.id.note_display_content);
                 content.setText(ENMLParser.parseContent(note.getContent()));
+                NoteContentCache.put(note.getGuid(), note.getContent());
                 loadingDialog.dismiss();
             } else {
                 Toast.makeText(NoteDisplayActivity.this, R.string.error_note_content_recover, Toast.LENGTH_SHORT).show();
@@ -80,7 +83,12 @@ public class NoteDisplayActivity extends AppCompatActivity {
         Note n = (Note) getIntent().getExtras().get(PARAM_NOTE);
         title.setText(n.getTitle());
         if (n.getContent() == null) {
-            new RecoverContentTask().execute(n);
+            String c = NoteContentCache.get(n.getGuid());
+            if (c != null) {
+                content.setText(ENMLParser.parseContent(c));
+            } else {
+                new RecoverContentTask().execute(n);
+            }
         } else {
             content.setText(ENMLParser.parseContent(n.getContent()));
         }
