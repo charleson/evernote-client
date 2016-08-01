@@ -185,6 +185,11 @@ public class NoteListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        confirmLogout();
+    }
+
     private void confirmLogout() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.message_logout_title)
