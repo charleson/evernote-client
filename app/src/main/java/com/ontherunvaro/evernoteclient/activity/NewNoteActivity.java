@@ -84,6 +84,14 @@ public class NewNoteActivity extends AppCompatActivity implements EvernoteCallba
             }
         });
 
+        Button clearBtn = (Button) findViewById(R.id.button_new_note_clear);
+        clearBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearContent();
+            }
+        });
+
         configureReader();
     }
 
@@ -146,4 +154,11 @@ public class NewNoteActivity extends AppCompatActivity implements EvernoteCallba
     public void onTextChanged(SingleLineWidgetApi w, String s, boolean intermediate) {
         contentField.setText(s);
     }
+
+
+    public void clearContent() {
+        widget.clear();
+        contentField.setText("");
+    }
+
 }

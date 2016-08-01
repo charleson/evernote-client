@@ -74,5 +74,15 @@
         android:text="@string/btn_new_note_save"
         android:id="@+id/button_new_note_save"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_clear_content"
+        android:id="@+id/button_new_note_clear"
+        android:layout_below="@+id/singleLine_widget"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

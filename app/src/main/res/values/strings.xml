@@ -28,4 +28,5 @@
     <string name="option_cancel">Cancelar</string>
     <string name="error_invalid_certificate">El certificado no es válido.</string>
     <string name="error_reader_not_configured">No se ha podido configurar el lector de texto en pantalla</string>
+    <string name="button_clear_content">Limpiar contenido</string>
 </resources>
