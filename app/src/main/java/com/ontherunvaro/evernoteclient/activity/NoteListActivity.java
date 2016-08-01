@@ -26,12 +26,16 @@ import com.evernote.thrift.TException;
 import com.ontherunvaro.evernoteclient.R;
 import com.ontherunvaro.evernoteclient.adapter.NotesAdapter;
 
+import java.util.ArrayList;
+
 public class NoteListActivity extends AppCompatActivity {
 
     private final static String TAG = "NoteListActivity";
     private final static Integer MAX_NOTES = 20;
 
     private final static int REQUEST_NEW_NOTE_SUCCESSFUL = 1;
+
+    private final static String STATE_NOTELIST = "com.ontherunvaro.evernoteclient.state.notelist";
 
     private class GetNotesTask extends AsyncTask<Void, Void, NoteList> {
 
@@ -73,30 +77,49 @@ public class NoteListActivity extends AppCompatActivity {
                 lv.setAdapter(na);
             }
 
-            Spinner sortSpinner = (Spinner) findViewById(R.id.spinner_notesort);
-            sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    sortList();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                    //do nothing
-                }
-            });
+            initSpinner();
 
             loadingDialog.dismiss();
         }
     }
 
+    private void initSpinner() {
+        Spinner sortSpinner = (Spinner) findViewById(R.id.spinner_notesort);
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                sortList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //do nothing
+            }
+        });
+
+    }
+
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_list);
 
-        new GetNotesTask().execute();
         ListView lv = (ListView) findViewById(R.id.noteList);
+        if (savedInstanceState != null) {
+            ArrayList<Note> noteList =
+                    (ArrayList<Note>) savedInstanceState.getSerializable(STATE_NOTELIST);
+            if (noteList != null) {
+                NotesAdapter na = new NotesAdapter(NoteListActivity.this, android.R.layout.simple_list_item_1, noteList);
+                lv.setAdapter(na);
+                initSpinner();
+            } else {
+                new GetNotesTask().execute();
+            }
+        } else {
+            new GetNotesTask().execute();
+        }
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View view, int pos, long id) {
@@ -118,18 +141,27 @@ public class NoteListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        ListView lv = (ListView) findViewById(R.id.noteList);
+        ArrayList<Note> noteList = ((NotesAdapter) lv.getAdapter()).getValues();
+        outState.putSerializable(STATE_NOTELIST, noteList);
+        super.onSaveInstanceState(outState);
+    }
+
     private void sortList() {
         ListView lv = (ListView) findViewById(R.id.noteList);
         NotesAdapter na = (NotesAdapter) lv.getAdapter();
 
         Spinner sortSpinner = (Spinner) findViewById(R.id.spinner_notesort);
         TextView tv = (TextView) sortSpinner.getSelectedView();
-        String selected = tv.getText().toString();
-
-        if (selected.equals(getString(R.string.option_sort_title))) {
-            na.sort(NotesAdapter.SortType.TITLE);
-        } else if (selected.equals(getString(R.string.option_sort_date))) {
-            na.sort(NotesAdapter.SortType.DATE);
+        if (tv != null) {
+            String selected = tv.getText().toString();
+            if (selected.equals(getString(R.string.option_sort_title))) {
+                na.sort(NotesAdapter.SortType.TITLE);
+            } else if (selected.equals(getString(R.string.option_sort_date))) {
+                na.sort(NotesAdapter.SortType.DATE);
+            }
         }
     }
 

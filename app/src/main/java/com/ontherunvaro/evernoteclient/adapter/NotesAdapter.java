@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.evernote.edam.type.Note;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -65,6 +66,15 @@ public class NotesAdapter extends ArrayAdapter<Note> {
 
         notifyDataSetChanged();
     }
+
+    public ArrayList<Note> getValues() {
+        ArrayList<Note> n = new ArrayList<>(getCount());
+        for (int i = 0; i < getCount(); i++) {
+            n.add(getItem(i));
+        }
+        return n;
+    }
+
 
     public enum SortType {
         DATE, TITLE
