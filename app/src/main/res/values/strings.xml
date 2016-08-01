@@ -22,4 +22,8 @@
     <string name="message_new_note_created">Nota creada con éxito</string>
     <string name="message_retrieving_content">Recuperando contenido de la nota…</string>
     <string name="error_note_content_recover">Se ha producido un error al recuperar la nota.</string>
+    <string name="message_logout_title">Cerrar sesión</string>
+    <string name="message_logout_message">¿Seguro que quieres cerrar la sesión?</string>
+    <string name="option_logout">Cerrar sesión</string>
+    <string name="option_cancel">Cancelar</string>
 </resources>

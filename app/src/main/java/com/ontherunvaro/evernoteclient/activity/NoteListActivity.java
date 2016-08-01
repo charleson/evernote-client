@@ -1,12 +1,16 @@
 package com.ontherunvaro.evernoteclient.activity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -139,6 +143,10 @@ public class NoteListActivity extends AppCompatActivity {
             }
         });
 
+        ActionBar ab = getSupportActionBar();
+        if (ab != null)
+            ab.setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -163,6 +171,36 @@ public class NoteListActivity extends AppCompatActivity {
                 na.sort(NotesAdapter.SortType.DATE);
             }
         }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                confirmLogout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void confirmLogout() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.message_logout_title)
+                .setMessage(R.string.message_logout_message)
+                .setPositiveButton(R.string.option_logout, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EvernoteSession.getInstance().logOut();
+                        Intent i = new Intent(NoteListActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+
+                })
+                .setNegativeButton(R.string.option_cancel, null)
+                .show();
     }
 
     @Override
