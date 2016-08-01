@@ -16,12 +16,18 @@ import com.evernote.client.android.EvernoteUtil;
 import com.evernote.client.android.asyncclient.EvernoteCallback;
 import com.evernote.client.android.asyncclient.EvernoteNoteStoreClient;
 import com.evernote.edam.type.Note;
+import com.myscript.atk.sltw.SingleLineWidget;
+import com.myscript.atk.sltw.SingleLineWidgetApi;
 import com.ontherunvaro.evernoteclient.R;
+import com.ontherunvaro.evernoteclient.myscript.MyCertificate;
 
-public class NewNoteActivity extends AppCompatActivity implements EvernoteCallback<Note> {
+public class NewNoteActivity extends AppCompatActivity implements EvernoteCallback<Note>, SingleLineWidgetApi.OnConfiguredListener, SingleLineWidgetApi.OnTextChangedListener {
 
     private static final String TAG = "NewNoteActivity";
     public static final String PARAM_NOTE_RESULT = "com.ontherunvaro.evernoteclient.RESULT_NEW_NOTE";
+
+    private SingleLineWidgetApi widget;
+    private EditText contentField;
 
     @Override
     public void onSuccess(Note result) {
@@ -48,6 +54,9 @@ public class NewNoteActivity extends AppCompatActivity implements EvernoteCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_note);
 
+        contentField = (EditText) findViewById(R.id.field_new_note_content);
+
+
         ActionBar ab = getSupportActionBar();
         if (ab != null)
             ab.setDisplayHomeAsUpEnabled(true);
@@ -57,8 +66,6 @@ public class NewNoteActivity extends AppCompatActivity implements EvernoteCallba
             @Override
             public void onClick(View view) {
                 EditText titleField = (EditText) findViewById(R.id.field_new_note_title);
-                EditText contentField = (EditText) findViewById(R.id.field_new_note_content);
-
 
                 boolean complete = true;
                 String title = titleField.getText().toString().trim();
@@ -76,6 +83,23 @@ public class NewNoteActivity extends AppCompatActivity implements EvernoteCallba
                 }
             }
         });
+
+        configureReader();
+    }
+
+    private void configureReader() {
+        widget = (SingleLineWidget) findViewById(R.id.singleLine_widget);
+        if (!widget.registerCertificate(MyCertificate.getBytes())) {
+            Toast.makeText(this, R.string.error_reader_not_configured, Toast.LENGTH_SHORT).show();
+            ((View) widget).setVisibility(View.GONE);
+            View v = findViewById(R.id.field_new_note_content);
+            return;
+        }
+
+        widget.setOnConfiguredListener(this);
+        widget.setOnTextChangedListener(this);
+        widget.addSearchDir("zip://" + getPackageCodePath() + "!/assets/conf");
+        widget.configure("es_ES", "cur_text");
 
     }
 
@@ -100,4 +124,26 @@ public class NewNoteActivity extends AppCompatActivity implements EvernoteCallba
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        widget.setOnTextChangedListener(null);
+        widget.setOnConfiguredListener(null);
+
+        super.onDestroy();
+    }
+
+
+    @Override
+    public void onConfigured(SingleLineWidgetApi w, boolean success) {
+        if (!success) {
+            Toast.makeText(this, R.string.error_reader_not_configured, Toast.LENGTH_SHORT).show();
+            ((View) widget).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onTextChanged(SingleLineWidgetApi w, String s, boolean intermediate) {
+        contentField.setText(s);
+    }
 }

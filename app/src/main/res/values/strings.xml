@@ -26,4 +26,6 @@
     <string name="message_logout_message">¿Seguro que quieres cerrar la sesión?</string>
     <string name="option_logout">Cerrar sesión</string>
     <string name="option_cancel">Cancelar</string>
+    <string name="error_invalid_certificate">El certificado no es válido.</string>
+    <string name="error_reader_not_configured">No se ha podido configurar el lector de texto en pantalla</string>
 </resources>

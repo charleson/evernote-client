@@ -1,0 +1,1 @@
+Place your MyScript key, in a class named MyCertificate.java, here.

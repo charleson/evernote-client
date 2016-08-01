@@ -59,8 +59,14 @@
         android:layout_alignParentEnd="true"
         android:inputType="text"
         android:hint="@string/hint_new_note_content"
-        android:layout_above="@+id/button_new_note_save"
         android:gravity="top" />
+
+    <com.myscript.atk.sltw.SingleLineWidget
+        android:id="@+id/singleLine_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button_new_note_save"
+        android:layout_below="@+id/field_new_note_content" />
 
     <Button
         android:layout_width="wrap_content"

@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    flatDir {
+        dirs './libs'
+    }
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
@@ -25,4 +31,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.evernote:android-sdk:2.0.0-RC3'
     compile 'com.android.support:design:24.0.0'
+    compile(name: 'MyScript_ATK-Core-android-component', ext: 'aar')
+    compile(name: 'MyScript_ATK-Text-android-component', ext: 'aar')
+    compile(name: 'MyScript_ATK-IMCommon-android-component', ext: 'aar')
+    compile(name: 'MyScript_ATK-SingleLineWidget-android-widget', ext: 'aar')
 }
